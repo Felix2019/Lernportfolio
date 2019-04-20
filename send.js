@@ -11,19 +11,39 @@ amqp.connect('amqp://localhost', function(err, conn) {
   conn.createChannel(function(err, ch) {
     
     
+   function getWetter() {
+    
+    
     var appKey = "7d987f8a7dc71e57baae316cb96771ed"; 
     var city = "London";
-    
-    
-    function getDaten() {
       
-      return new Promise(resolve => {
+    
+    return new Promise(resolve => {
         let wetterapi = fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid="+appKey);  
         resolve(wetterapi); 
       }); 
       
         
     };
+    
+    
+   function getInsta() {
+
+        // instagram token
+        var token = '39190828.ce76c6a.bc3ded7dde964452a106441e10420116';
+        var count = 1; 
+          
+        
+        return new Promise(resolve => { 
+            let instaApi = fetch('https://api.instagram.com/v1/users/self/media/recent?access_token=' + token + '&count=' + count);  
+            resolve(instaApi); 
+          }); 
+          
+            
+        };
+    
+    
+    
     
 //    
 //    getDaten().then(function(result) {
@@ -34,16 +54,20 @@ amqp.connect('amqp://localhost', function(err, conn) {
 //      });
       
         
-async function wetterFertig () {
+async function DatenFertig () {
         
-      var result = await getDaten(); 
-      result = await result.json();
+      var resultWetter = await getWetter();
+      var resultInsta = await getInsta(); 
+      resultWetter = await resultWetter.json(); 
+      resultInsta = await resultInsta.json();
       
-      console.log(result.main.temp);
+      console.log(resultWetter.main.temp);
+      console.log(resultInsta.data);
         
       }
+      
     
-    var ergebnis = wetterFertig();
+var ergebnis = DatenFertig();
        
     
     var q = 'hello';
