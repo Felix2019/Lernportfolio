@@ -18,11 +18,10 @@ var http = require('http');
 	
 	
 	var bewegung; 
-	var latitude; 
-	var longitude; 
-	var poslat = 35.4356; 
-	var poslong = 23.7648;
-	var akku = 100; 
+	var poslat = 35.4356;  // aktuelle Lat Position des Roboters
+	var poslong = 23.7648;  // aktuelle Long Position des Roboters
+	var akku = 100;  // Akkustand des Roboters
+	const CordinatesStation = {latitude: 51.5103, longitude: 7.49347};  // Koordinaten der Raumstation
 	
 	
 	
@@ -37,8 +36,6 @@ var http = require('http');
 	
 	
 	function entferungStation() {
-		
-		const CordinatesStation = {latitude: 51.5103, longitude: 7.49347}; 
 		
 		var result = geolib.getDistance(
 			CordinatesStation,
@@ -80,6 +77,24 @@ var http = require('http');
 		
 		}
 		
+		// prüfen, ob akku ausreichend ist für die Route zum Standort
+		
+		var resultDistance1 = geolib.getDistance(
+		    {latitude: latitude1, longitude: longitude1},   
+		      CordinatesStation
+		     
+		);
+		
+		if ( akku > 50) {
+			
+			console.log("genug akku"); 
+		
+			
+		}
+		
+		console.log(resultDistance1);
+		
+		
 	}
 	
 	
@@ -87,7 +102,7 @@ var http = require('http');
 	
 
 	
-function getDaten() {
+function getDaten() {      // 
 			
 			
 			var appKey = "7d987f8a7dc71e57baae316cb96771ed"; 
